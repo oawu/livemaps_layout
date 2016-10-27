@@ -5,38 +5,148 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
 
-    <title></title>
+    <title>生活地圖切版應用</title>
 
     <meta name="robots" content="index,follow" />
 
     <meta name="author" content="吳政賢(OA Wu)" />
 
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
+    <meta name="keywords" content="生活地圖,切版,checkbox,checked" />
+    <meta name="description" content="利用 input 元素的 checkbox 來實作不同狀態下的排版，配合使用 css 的 :checked，來達成不同效果。在當 :checked 時，再利用 ~ 的 selector 將後方所有元素制定狀態！" />
     <meta property="og:site_name" content="" />
-    <meta property="og:title" content="" />
-    <meta property="og:description" content="" />
-    <meta property="og:url" content="" />
+    <meta property="og:title" content="生活地圖切版應用" />
+    <meta property="og:description" content="利用input元素的checkbox來實作不同狀態下的排版，配合使用css的:checked，來達成不同效果。在當:checked時，再利用~的selector將後方所有元素制定狀態！" />
+    <meta property="og:url" content="http://works.ioa.tw/livemaps_layout/index.html" />
 
     <meta property="fb:admins" content="100000100541088" />
-    <meta property="fb:app_id" content="640377126095413" />
+    <meta property="fb:app_id" content="199589883770118" />
 
     <meta property="og:locale" content="zh_TW" />
     <meta property="og:locale:alternate" content="en_US" />
 
-    <meta property="og:type" content="city" />
-    <meta property="og:image" content="" alt="" />
+    <meta property="og:type" content="article" />
+    <meta property="article:author" content="https://www.facebook.com/comdan66" />
+    <meta property="article:publisher" content="https://www.facebook.com/comdan66" />
+    <meta property="article:modified_time" content="2016-10-27T18:48:47+08:00" />
+    <meta property="article:published_time" content="2016-10-27T18:48:47+08:00" />
+
+    <meta property="og:image" content="http://works.ioa.tw/livemaps_layout/img/og.png" alt="" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
+    <script src="https://maps.googleapis.com/maps/api/js?language=zh-TW" language="javascript" type="text/javascript" ></script>
+    
     <link href="css/public.css" rel="stylesheet" type="text/css" />
-
-    <script src="js/jquery_v1.10.2/jquery-1.10.2.min.js" language="javascript" type="text/javascript" ></script>
     <script src="js/public.js" language="javascript" type="text/javascript" ></script>
-
   </head>
   <body lang="zh-tw">
+    <div id='maps'></div>
+
+    <input type='checkbox' class='btn-ckb' id='chatroom-ckb' checked />
+    <input type='checkbox' class='btn-ckb' id='inputs-ckb' checked />
+    <input type='checkbox' class='btn-ckb' id='menu-ckb' />
+    <input type='checkbox' class='btn-ckb' id='option-ckb' />
+    <input type='checkbox' class='btn-ckb' id='notification-ckb' />
+    <input type='checkbox' class='btn-ckb' id='comment-ckb' />
+    <input type='checkbox' class='btn-ckb' id='emojis-ckb' />
+
+
+    <label id='chatroom-btn' class='mbtn icon-chat-3' for='chatroom-ckb'></label>
+    <label id='inputs-btn' class='mbtn icon-pencil2' for='inputs-ckb'></label>
+    <label id='notification-btn' class='mbtn icon-earth s' data-count='999' for='notification-ckb' ></label>
+    
+    <a id='my-location' class='mbtn icon-my_location s'></a>
+    <div id='zoom'><a id='zoom-in' class='icon-zoom-in'></a><a id='zoom-out' class='icon-zoom-out'></a></div>
+
+    <div id='chat' class='pobox'><h4>聊天</h4><div class='content'>
+      <div class='chat he'><img src='https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150'><div>早安呀～</div><time>5 分鐘前</time></div>
+      <div class='chat me'><img src='https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150'><div>哈哈，早餐吃什麼？</div><time>4 分鐘前</time></div>
+      <div class='chat he'><img src='https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150'><div>不知道耶，你覺得呢？</div><time>3 分鐘前</time></div>
+      <div class='chat me'><img src='https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150'><div>恩.. 隨便啊，都 OK</div><time>2 分鐘前</time></div>
+      <div class='chat he'><img src='https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150'><div>喔，那吃.. 豆漿！？</div><time>1 分鐘前</time></div>
+      <div class='chat me'><img src='https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150'><div>哪一家呀？</div><time>不到 1 分鐘前</time></div>
+    </div><div class='form'><input type='input' id='chat-input' placeholder='回覆什麼呢？' /></div><div class='btns'><a class='close'>關閉</a><a class='submit'>送出</a></div></div>
+    <div id='imgbox'><img src='https://scontent-tpe1-1.xx.fbcdn.net/t31.0-8/12967348_1286532508026755_3264519753966272214_o.jpg' /><div class='close icon-cross'></div></div>
+    <div id='u2box' class='pobox'><h4></h4><div class='content'><iframe src="https://www.youtube.com/embed/bd8TBKnbNNQ" frameborder='0' allowfullscreen=''></iframe></div><div class='btns'>關閉</div></div>
+    
+    <div id='cover'></div>
+    
+    <label id='menu-btn' class='mbtn icon-menu' for='menu-ckb'><span>生活地圖</span></label>
+    <label id='option-btn' class='mbtn icon-cog' for='option-ckb'></label>
+    <div class='fb-like' id='fb-like' data-href='http://works.ioa.tw/livemaps_layout/' data-send='false' data-layout='button_count' data-action='like' data-show-faces='false' data-share='true'></div>
+    <a id='license' class='icon-copyright' href='https://livemaps.ioa.tw/' target='_blank'>使用條款</a>
+
+    <div id='chatroom'>
+      <div id='u2' class="chat u2"><img class="avatar" src="https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150"><div class="r1 u2"><span><div class="icon-youtube"><img src="https://img.youtube.com/vi/bd8TBKnbNNQ/hqdefault.jpg"></div><span>各位早安啦，聽歌囉～</span></span><div class="r2"><div>贊助</div><time>2016-11-01 23:59:59</time></div></div></div>
+      <div id='img' class="chat u1"><img class="avatar" src="https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150"><div class="r1 img"><span><div><img src="https://scontent-tpe1-1.xx.fbcdn.net/t31.0-8/12967348_1286532508026755_3264519753966272214_o.jpg"></div><span>北港迎媽祖，這張拍得如何？</span></span><div class="r2"><div>贊助</div><time>2016-11-01 23:59:59</time></div></div></div>
+      <div class="chat u5"><img class="avatar" src="https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150"><div class="r1"><span>出師表測試一下ＸＤ 臣亮言：先帝創業未半，而中道崩殂。今天下三分，益州疲弊，此誠危急存亡之秋也。然侍衛之臣，不懈於內；忠志之士，忘身於外者，蓋追先帝之殊遇，欲報之於陛下也。誠宜開張聖聽，以光先帝遺德，恢弘志士之氣；不宜妄自菲薄，引喻失義，以塞忠諫之路也。宮中府中，俱為一體，陟罰臧否，不宜異同。若有作姦犯科，及為忠善者，宜付有司，論其刑賞，以昭陛下平明之治，不宜篇私，使內外異法也。</span><a class="icon-my_location"></a><div class="r2"><div>贊助</div><time>2016-11-01 23:59:59</time></div></div></div>
+      <div class="chat u4"><img class="avatar" src="https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150"><div class="r1"><span>測試測試～～～</span><a class="icon-my_location"></a><div class="r2"><div>贊助</div><time>2016-11-01 23:59:59</time></div></div></div>
+      <div class="chat"><img class="avatar" src="https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150"><div class="r1"><span>侍中、侍郎郭攸之、費褘、董允等，此皆良實，志慮忠純，是以先帝簡拔以遺陛下。愚以為宮中之事，事無大小，悉以咨之，然後施行，必能裨補闕漏，有所廣益。將軍向寵，性行淑均，曉暢軍事，試用於昔日，先帝稱之曰「能」，是以眾議舉寵為督。愚以為營中之事，悉以咨之，必能使行陣和睦，優劣得所。親賢臣，遠小人，此先漢所以興隆也；親小人，遠賢臣，此後漢所以傾頹也。先帝在時，每與臣論此事，未嘗不歎息痛恨於桓、靈也。侍中、尚書、長史；參軍，此悉貞良死節之臣也，願陛下親之信之，則漢室之隆，可計日而待也。</span><a class="icon-my_location"></a><div class="r2"><div>贊助</div><time>2016-11-01 23:59:59</time></div></div></div>
+    </div>
+
+    <form id='inputs'><input type='text' id='text' placeholder='在想什麼呢？' /><button type='submit' id='submit-btn' class='gbtn'>送出</button><label for='emojis-ckb' id='emoji-btn' class='gbtn'>貼圖</label></form>
+    <div id='notification' class='pobox'><h4>通知訊息</h4><div class='content'>
+      <div class='unit'>
+        <img src='https://graph.facebook.com/1433272646686073/picture?width=150&amp;height=150' />
+        <div>asd</div>
+        <span>
+          <time>5分鐘前</time>
+          <a>標為已讀</a>
+          <a class='r'>999</a>
+        </span>
+      </div>
+    </div><label class='btns' for='notification-ckb'>關閉</label></div>
+    <div id='comment' class='pobox'><h4>留言吧！</h4><div class='content'><div class="fb-comments" data-order-by='reverse_time' width='100%' data-href="http://works.ioa.tw/livemaps_layout/" data-numposts="5"></div></div><label class='btns' for='comment-ckb'>關閉</label></div>
+    <div id='emojis' class='pobox'><h4>選擇貼圖</h4><div class="content"><h5>心情 • 表情</h5><div><a class=""><img src="https://comdan66.github.io/ci/emoji/b1/1f600.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f601.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f602.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f603.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f604.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f605.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f606.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f607.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f608.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f609.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f610.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f611.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f612.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/2639.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f613.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f614.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f615.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f616.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f617.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f618.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f619.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f620.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f621.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f622.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f623.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f624.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f625.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f626.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f627.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f628.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f629.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f630.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f631.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f632.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f633.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f634.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f635.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f636.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f637.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f641.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f642.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f643.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f644.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f60a.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f60b.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f60c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f60d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f60e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f60f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f61a.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f61b.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f61c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f61d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f61e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f61f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f62a.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f62b.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f62c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f62d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f62e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f62f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f910.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f911.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f912.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f913.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f914.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f915.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f917.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f920.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f923.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f924.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f925.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b1/1f927.png"></a></div><h5>符號 • 情緒</h5><div><a><img src="https://comdan66.github.io/ci/emoji/b7/1f4a2.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f4af.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/203c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/2049.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f495.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/2764.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f494.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f49a.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f49b.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f49c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f49d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f49e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f49f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f493.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f496.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/1f497.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/2753.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b7/2757.png"></a></div><h5>食物 • 美食</h5><div><a><img src="https://comdan66.github.io/ci/emoji/b5/1f32d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f32e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f32f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f33a.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f33b.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f33c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f33d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f33e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f33f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f34a.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f34b.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f34c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f34d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f34e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f34f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f35a.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f35b.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f35c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f35d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f35e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f35f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f36a.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f36b.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f36c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f36d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f36e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f36f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f37a.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f37b.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f37c.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f37d.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f37e.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f37f.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f344.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f345.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f346.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f347.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f348.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f349.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f350.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f351.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f352.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f353.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f354.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f355.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f356.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f357.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f358.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f359.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f360.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f361.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f362.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f363.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f364.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f365.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f366.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f367.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f368.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f369.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f370.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f371.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f372.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f373.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f374.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f375.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f376.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f377.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f378.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f379.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f382.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f950.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f951.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f952.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f953.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f954.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f955.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f956.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f957.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f958.png"></a><a><img src="https://comdan66.github.io/ci/emoji/b5/1f959.png"></a></div></div><div class='btns'><label class='close' for='emojis-ckb'>取消</label><label class='ok' for='emojis-ckb'>確定</label></div></div>
+
+    <div id='menu'>
+      <header><h1>LiveMaps</h1><h2>生活地圖</h2></header>
+
+      <h3>主要功能</h3>
+      <div>
+        <a href='https://livemaps.ioa.tw/' class='icon-pin-alt'>生活地圖 網站</a>
+        <a href='index.html' class='icon-pin-alt a'>生活地圖 樣板</a>
+      </div>
+
+      <h3>其他功能</h3>
+      <div>
+        <a href='http://www.ioa.tw/' class='icon-share'>開發人員</a>
+        <a href='https://github.com/comdan66/livemaps_layout' class='icon-user'>源碼 GitHub</a>
+      </div>
+    </div>
+
+    <div id='option'>
+      <header><h3>設定</h3></header>
+      
+      <h3>定位系統</h3>
+      <div>
+        <label id='high-accuracy-l' class='icon-my_location'><span>精準定位</span><label class='switch'><input type='checkbox' id='high-accuracy' checked/><span></span></label></label>
+      </div>
+
+      <h3>音效提示</h3>
+      <div>
+        <label class='icon-notification_active'><span>有人加入地圖</span><label class='switch'><input type='checkbox' id='audio-add-maps' checked /><span></span></label></label>
+        <label id='audio-get-msg-l' class='icon-notification_active'><span>收到新私訊</span><label class='switch'><input type='checkbox' id='audio-get-msg' checked /><span></span></label></label>
+        <label class='icon-notification_active'><span>出現新訊息</span><label class='switch'><input type='checkbox' id='audio-add-msg' checked /><span></span></label></label>
+      </div>
+
+      <h3 id='notificationh3'>瀏覽器通知</h3>
+      <div>
+        <label id='notification-add-msg-1' class='icon-notification'><span>出現新動態</span><label class='switch'><input type='checkbox' id='notification-add-msg'/><span></span></label></label>
+        <label id='notification-get-msg-1' class='icon-notification'><span>收到新私訊</span><label class='switch'><input type='checkbox' id='notification-get-msg' checked/><span></span></label></label>
+      </div>
+
+      <h3>其他設定</h3>
+      <div id='cfg-other'>
+        <label class='icon-chat-3' for='comment-ckb'>臉書留言區</label>
+        <a class='icon-credit' href='https://livemaps.ioa.tw/' target='_blank'>生活地圖 網站</a>
+      </div>
+    </div>
+
+    <div id='loading' class='s'><div class='cover'></div><div class='loading'><div><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><span class='txt'>連線中，請稍候..</span></div></div>
+
+    <div id='fb-root'></div>
 
   </body>
 </html>
